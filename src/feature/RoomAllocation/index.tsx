@@ -1,5 +1,5 @@
 import Room from "feature/Room";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 export type RoomData = {
   adult: number;
@@ -15,12 +15,6 @@ type Props = {
 const RoomAllocation = ({ guest, room, onChange }: Props) => {
   const [rooms, setRoomsChange] = useState<RoomData[]>([]);
 
-  const unallocatedCount = useMemo(
-    () =>
-      guest - rooms.reduce((prev, curr) => prev + curr.adult + curr.child, 0),
-    [rooms]
-  );
-
   /**
    * 每當 room 和 guest 產生變化，即重新分配
    *  */
@@ -30,6 +24,14 @@ const RoomAllocation = ({ guest, room, onChange }: Props) => {
     );
   }, [room, guest]);
 
+  const unallocatedCount = useMemo(
+    () =>
+      guest - rooms.reduce((prev, curr) => prev + curr.adult + curr.child, 0),
+    [rooms]
+  );
+
+  useEffect(() => onChange(rooms), [rooms]);
+
   const roomsRender = rooms.map((item, idx) => (
     <Room
       guest={guest}
@@ -38,6 +40,7 @@ const RoomAllocation = ({ guest, room, onChange }: Props) => {
       adult={item.adult}
       child={item.child}
       idx={idx}
+      disabled={room === guest}
       setRoomsChange={setRoomsChange}
       key={`rooms-${idx}`}
     />

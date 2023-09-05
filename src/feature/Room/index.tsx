@@ -1,11 +1,6 @@
 import CustomInputNumber from "components/CustomInputNumber";
 import { RoomData } from "feature/RoomAllocation";
-import React, {
-  MutableRefObject,
-  SetStateAction,
-  Dispatch,
-  useCallback,
-} from "react";
+import React, { SetStateAction, Dispatch, useCallback } from "react";
 import { clamp } from "utils/number";
 
 type Props = {
@@ -15,6 +10,7 @@ type Props = {
   adult: number;
   child: number;
   idx: number;
+  disabled: boolean;
   setRoomsChange: Dispatch<SetStateAction<RoomData[]>>;
 };
 
@@ -31,17 +27,18 @@ const Room = ({
   adult,
   child,
   idx,
+  disabled,
   setRoomsChange,
 }: Props) => {
   const handleAdultChange = useCallback<HTMLInputEventHandler>(
     (e) => {
       setRoomsChange((prev) => {
-        const newValue = Number(e.target.value);
-        const newTotalGuestOfRoom = newValue + prev[idx].child;
-        const offset = newValue - prev[idx].adult;
+        const newTotalGuestOfRoom = Number(e.target.value) + prev[idx].child;
         const totalUnallocatedOfRoom = max - prev[idx].child;
 
         if (newTotalGuestOfRoom >= max) {
+          const newValue = Number(e.target.value);
+
           e.target.value = clamp(
             newValue,
             1,
@@ -49,12 +46,20 @@ const Room = ({
           ).toString();
         }
 
+        const offset = Number(e.target.value) - prev[idx].adult;
         if (offset > unallocatedCount) {
+          const newValue = Number(e.target.value);
+
           e.target.value = clamp(
             newValue,
             1,
             prev[idx].adult + unallocatedCount
           ).toString();
+        }
+
+        // not change
+        if (Number(e.target.value) === prev[idx].adult) {
+          return prev;
         }
 
         return [
@@ -73,12 +78,12 @@ const Room = ({
   const handleChildChange = useCallback<HTMLInputEventHandler>(
     (e) => {
       setRoomsChange((prev) => {
-        const newValue = Number(e.target.value);
-        const newTotalGuestOfRoom = prev[idx].adult + newValue;
-        const offset = newValue - prev[idx].child;
+        const newTotalGuestOfRoom = prev[idx].adult + Number(e.target.value);
         const totalUnallocatedOfRoom = max - prev[idx].adult;
 
         if (newTotalGuestOfRoom >= max) {
+          const newValue = Number(e.target.value);
+
           e.target.value = clamp(
             newValue,
             0,
@@ -86,12 +91,20 @@ const Room = ({
           ).toString();
         }
 
+        const offset = Number(e.target.value) - prev[idx].child;
         if (offset > unallocatedCount) {
+          const newValue = Number(e.target.value);
+
           e.target.value = clamp(
             newValue,
             0,
             prev[idx].child + unallocatedCount
           ).toString();
+        }
+
+        // not change
+        if (Number(e.target.value) === prev[idx].child) {
+          return prev;
         }
 
         return [
@@ -123,7 +136,7 @@ const Room = ({
           step={1}
           name={`room-${idx}-adult`}
           value={adult}
-          disabled={false}
+          disabled={disabled}
           onChange={handleAdultChange}
         />
       </div>
@@ -139,7 +152,7 @@ const Room = ({
           step={1}
           name={`room-${idx}-child`}
           value={child}
-          disabled={false}
+          disabled={disabled}
           onChange={handleChildChange}
         />
       </div>
