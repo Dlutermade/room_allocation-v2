@@ -1,8 +1,7 @@
-import CustomInputNumber from "components/CustomInputNumber";
 import Room from "feature/Room";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-type Result = {
+export type RoomData = {
   adult: number;
   child: number;
 };
@@ -10,35 +9,37 @@ type Result = {
 type Props = {
   guest: number;
   room: number;
-  onChange: (result: Result[]) => void;
+  onChange: (result: RoomData[]) => void;
 };
 
 const RoomAllocation = ({ guest, room, onChange }: Props) => {
-  const [result, setResult] = useState<Result[]>([]);
-  const prevChangeRoom = useRef(-1);
+  const [rooms, setRoomsChange] = useState<RoomData[]>([]);
 
   const unallocatedCount = useMemo(
     () =>
-      guest - result.reduce((prev, curr) => prev + curr.adult + curr.child, 0),
-    [result]
+      guest - rooms.reduce((prev, curr) => prev + curr.adult + curr.child, 0),
+    [rooms]
   );
 
   /**
    * 每當 room 和 guest 產生變化，即重新分配
    *  */
   useEffect(() => {
-    setResult(Array.from({ length: room }, () => ({ adult: 0, child: 0 })));
+    setRoomsChange(
+      Array.from({ length: room }, () => ({ adult: 1, child: 0 }))
+    );
   }, [room, guest]);
 
-  const rooms = result.map((item, idx) => (
+  const roomsRender = rooms.map((item, idx) => (
     <Room
       guest={guest}
       unallocatedCount={unallocatedCount}
+      max={4}
       adult={item.adult}
       child={item.child}
       idx={idx}
-      prevChangeRoom={prevChangeRoom}
-      key={`rooms-${idx}-${item.adult}-${item.child}`}
+      setRoomsChange={setRoomsChange}
+      key={`rooms-${idx}`}
     />
   ));
 
@@ -51,7 +52,7 @@ const RoomAllocation = ({ guest, room, onChange }: Props) => {
         尚未分配人數: {unallocatedCount}人
       </div>
 
-      {rooms}
+      {roomsRender}
     </div>
   );
 };

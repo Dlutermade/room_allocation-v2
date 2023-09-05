@@ -1,13 +1,21 @@
 import CustomInputNumber from "components/CustomInputNumber";
-import React, { MutableRefObject, useCallback } from "react";
+import { RoomData } from "feature/RoomAllocation";
+import React, {
+  MutableRefObject,
+  SetStateAction,
+  Dispatch,
+  useCallback,
+} from "react";
+import { clamp } from "utils/number";
 
 type Props = {
   guest: number;
   unallocatedCount: number;
+  max: number;
   adult: number;
   child: number;
   idx: number;
-  prevChangeRoom: MutableRefObject<number>;
+  setRoomsChange: Dispatch<SetStateAction<RoomData[]>>;
 };
 
 type HTMLInputEventHandler = (
@@ -19,14 +27,85 @@ type HTMLInputEventHandler = (
 const Room = ({
   guest,
   unallocatedCount,
+  max,
   adult,
   child,
   idx,
-  prevChangeRoom,
+  setRoomsChange,
 }: Props) => {
-  const handleAdultChange = useCallback<HTMLInputEventHandler>((e) => {}, []);
+  const handleAdultChange = useCallback<HTMLInputEventHandler>(
+    (e) => {
+      setRoomsChange((prev) => {
+        const newValue = Number(e.target.value);
+        const newTotalGuestOfRoom = newValue + prev[idx].child;
+        const offset = newValue - prev[idx].adult;
+        const totalUnallocatedOfRoom = max - prev[idx].child;
 
-  const handleChildChange = useCallback<HTMLInputEventHandler>((e) => {}, []);
+        if (newTotalGuestOfRoom >= max) {
+          e.target.value = clamp(
+            newValue,
+            1,
+            totalUnallocatedOfRoom
+          ).toString();
+        }
+
+        if (offset > unallocatedCount) {
+          e.target.value = clamp(
+            newValue,
+            1,
+            prev[idx].adult + unallocatedCount
+          ).toString();
+        }
+
+        return [
+          ...prev.slice(0, idx),
+          {
+            ...prev[idx],
+            adult: Number(e.target.value),
+          },
+          ...prev.slice(idx + 1),
+        ];
+      });
+    },
+    [unallocatedCount]
+  );
+
+  const handleChildChange = useCallback<HTMLInputEventHandler>(
+    (e) => {
+      setRoomsChange((prev) => {
+        const newValue = Number(e.target.value);
+        const newTotalGuestOfRoom = prev[idx].adult + newValue;
+        const offset = newValue - prev[idx].child;
+        const totalUnallocatedOfRoom = max - prev[idx].adult;
+
+        if (newTotalGuestOfRoom >= max) {
+          e.target.value = clamp(
+            newValue,
+            0,
+            totalUnallocatedOfRoom
+          ).toString();
+        }
+
+        if (offset > unallocatedCount) {
+          e.target.value = clamp(
+            newValue,
+            0,
+            prev[idx].child + unallocatedCount
+          ).toString();
+        }
+
+        return [
+          ...prev.slice(0, idx),
+          {
+            ...prev[idx],
+            child: Number(e.target.value),
+          },
+          ...prev.slice(idx + 1),
+        ];
+      });
+    },
+    [unallocatedCount]
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -39,12 +118,12 @@ const Room = ({
         </div>
 
         <CustomInputNumber
-          min={0}
+          min={1}
           max={guest}
           step={1}
           name={`room-${idx}-adult`}
           value={adult}
-          disabled={unallocatedCount === 0}
+          disabled={false}
           onChange={handleAdultChange}
         />
       </div>
@@ -60,7 +139,7 @@ const Room = ({
           step={1}
           name={`room-${idx}-child`}
           value={child}
-          disabled={unallocatedCount === 0}
+          disabled={false}
           onChange={handleChildChange}
         />
       </div>
