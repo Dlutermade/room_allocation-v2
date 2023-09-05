@@ -1,10 +1,19 @@
 import React from "react";
+import CustomInputNumber from "component/CustomInputNumber";
 
 const App = () => {
   return (
     <div>
-      App
-      <h2 className="text-gray-500">gjiwe</h2>
+      <CustomInputNumber
+        min={0}
+        max={1000}
+        step={5}
+        name="test"
+        value={1}
+        disabled={false}
+        onChange={(e) => {}}
+        onBlur={(e) => {}}
+      />
     </div>
   );
 };
