@@ -4,7 +4,7 @@ const App = () => {
   return (
     <div>
       App
-      <h2 className="test">gjiwe</h2>
+      <h2 className="text-gray-500">gjiwe</h2>
     </div>
   );
 };

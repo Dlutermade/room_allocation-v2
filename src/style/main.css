@@ -1,3 +1,3 @@
-.test {
-  color: #faa;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
