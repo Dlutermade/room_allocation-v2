@@ -2,6 +2,7 @@ const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -9,7 +10,8 @@ module.exports = {
   devtool: "inline-source-map",
   output: {
     path: path.join(__dirname, "/dist"),
-    filename: "bundle.js",
+    chunkFilename: "scripts/[name].[fullhash:8].bundle.js",
+    filename: "scripts/[name].[fullhash:8].bundle.js",
   },
   devServer: {
     port: 3003,
@@ -37,10 +39,30 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".jsx", ".js", ".ts"],
   },
+  optimization: {
+    runtimeChunk: "single",
+    splitChunks: {
+      chunks: "all",
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            )[1];
+            return `package.${packageName.replace("@", "").replace(".", "")}`;
+          },
+        },
+      },
+    },
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./index.html",
     }),
     new MiniCssExtractPlugin(),
+    new CompressionPlugin(),
   ],
 };
