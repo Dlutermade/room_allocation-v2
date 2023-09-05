@@ -7,6 +7,11 @@ export type Action<T = string> = {
   handler: VoidFunction;
 };
 
+type ActionRecord<T extends string> = Record<
+  `handleStart${Action<T>["name"]}`,
+  VoidFunction
+>;
+
 const useTimer = <T extends string = string>(
   actions: Action<T>[],
   delay: number,
@@ -20,12 +25,7 @@ const useTimer = <T extends string = string>(
     }
   }, [isStopTimer]);
 
-  type ActionRecord = Record<
-    `handleStart${(typeof actions)[number]["name"]}`,
-    VoidFunction
-  >;
-
-  const actionRecord = actions.reduce<ActionRecord>(
+  const actionRecord = actions.reduce<ActionRecord<T>>(
     (prev, curr) => ({
       ...prev,
       [`handleStart${curr.name}`]: () => {
@@ -35,7 +35,7 @@ const useTimer = <T extends string = string>(
         timer.current = setInterval(curr.handler, delay);
       },
     }),
-    {} as ActionRecord
+    {} as ActionRecord<T>
   );
 
   const handleStopTimer = () => {
