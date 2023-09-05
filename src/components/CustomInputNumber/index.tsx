@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import { cn } from "utils/cn";
 import useLimitedCounter from "./hooks/useLimitedCounter";
 import useTimer, { Action } from "./hooks/useTimer";
 
@@ -68,14 +69,20 @@ const CustomInputNumber = ({
   return (
     <div className="flex gap-2 text-base">
       <button
-        className="w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg"
+        className={cn(
+          "w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg",
+          disabled && "cursor-not-allowed"
+        )}
         onMouseDown={handleStartDecrement}
         onMouseUp={handleStopTimer}
       >
         -
       </button>
       <input
-        className="w-12 h-12 text-center border-2 border-indigo-700 rounded-lg outline-0 focus:border-indigo-500"
+        className={cn(
+          "w-12 h-12 text-center border-2 border-indigo-700 rounded-lg outline-0 focus:border-indigo-500",
+          disabled && "cursor-not-allowed border-white"
+        )}
         type="number"
         min={min}
         max={max}
@@ -86,7 +93,10 @@ const CustomInputNumber = ({
         onBlur={handleBlur}
       />
       <button
-        className="w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg"
+        className={cn(
+          "w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg",
+          disabled && "cursor-not-allowed"
+        )}
         onMouseDown={handleStartIncrement}
         onMouseUp={handleStopTimer}
       >
