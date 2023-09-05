@@ -15,8 +15,8 @@ type Props = {
   name: string;
   value: number;
   disabled: boolean;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-  onBlur: FocusEventHandler<HTMLInputElement>;
+  onChange: (event: Event & { target: HTMLInputElement }) => void;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
 const CustomInputNumber = ({
@@ -24,13 +24,13 @@ const CustomInputNumber = ({
   max,
   step,
   name,
-  value: _value,
+  value,
   disabled,
   onChange,
   onBlur,
 }: Props) => {
-  const { value, setNewValue, handleIncreases, handleDecreases } =
-    useLimitedCounter(_value, min, max, step, disabled);
+  const { elRef, setNewValue, handleIncreases, handleDecreases } =
+    useLimitedCounter(value, onChange, min, max, step, disabled);
 
   type Operation = "Increment" | "Decrement";
 
@@ -54,14 +54,13 @@ const CustomInputNumber = ({
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       setNewValue(Number(e.target.value));
-      onChange(e);
     },
-    [setNewValue, onChange]
+    [setNewValue]
   );
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = useCallback(
     (e) => {
-      onBlur(e);
+      onBlur?.(e);
     },
     [onBlur]
   );
@@ -83,11 +82,11 @@ const CustomInputNumber = ({
           "w-12 h-12 text-center border-2 border-indigo-700 rounded-lg outline-0 focus:border-indigo-500",
           disabled && "cursor-not-allowed border-white"
         )}
+        ref={elRef}
         type="number"
         min={min}
         max={max}
         name={name}
-        value={value}
         disabled={disabled}
         onChange={handleChange}
         onBlur={handleBlur}
