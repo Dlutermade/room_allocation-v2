@@ -10,15 +10,15 @@ export type Action<T = string> = {
 const useTimer = <T extends string = string>(
   actions: Action<T>[],
   delay: number,
-  isClearTimer?: boolean
+  isStopTimer?: boolean
 ) => {
   const timer = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    if (isClearTimer && timer.current) {
+    if (isStopTimer && timer.current) {
       clearInterval(timer.current);
     }
-  }, [isClearTimer]);
+  }, [isStopTimer]);
 
   type ActionRecord = Record<
     `handleStart${(typeof actions)[number]["name"]}`,

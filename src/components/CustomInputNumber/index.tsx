@@ -2,11 +2,8 @@ import React, {
   ChangeEventHandler,
   FocusEventHandler,
   useCallback,
-  useEffect,
   useMemo,
-  useRef,
 } from "react";
-import { clamp } from "../../utils/number";
 import useLimitedCounter from "./hooks/useLimitedCounter";
 import useTimer, { Action } from "./hooks/useTimer";
 
@@ -32,7 +29,7 @@ const CustomInputNumber = ({
   onBlur,
 }: Props) => {
   const { value, setNewValue, handleIncreases, handleDecreases } =
-    useLimitedCounter(_value, min, max, step);
+    useLimitedCounter(_value, min, max, step, disabled);
 
   type Operation = "Increment" | "Decrement";
 
@@ -51,7 +48,7 @@ const CustomInputNumber = ({
   );
 
   const { handleStopTimer, handleStartIncrement, handleStartDecrement } =
-    useTimer(Actions, 500, value === max || value === min);
+    useTimer(Actions, 500, disabled || value === max || value === min);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
