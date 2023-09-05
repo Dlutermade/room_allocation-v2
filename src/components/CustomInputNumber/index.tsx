@@ -72,7 +72,6 @@ const CustomInputNumber = ({
     <div className="flex gap-2 text-base">
       <button
         className="w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg"
-        onClick={handleDecreases}
         onMouseDown={handleStartDecrement}
         onMouseUp={handleStopTimer}
       >
@@ -91,7 +90,6 @@ const CustomInputNumber = ({
       />
       <button
         className="w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg"
-        onClick={handleIncreases}
         onMouseDown={handleStartIncrement}
         onMouseUp={handleStopTimer}
       >
