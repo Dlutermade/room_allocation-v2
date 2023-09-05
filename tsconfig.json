@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "baseUrl": "./src",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "ES6",
@@ -8,6 +9,11 @@
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+
+    "paths": {
+      "utils": ["/utils"],
+      "component": ["/component"]
+    }
   }
 }
