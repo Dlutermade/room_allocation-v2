@@ -1,5 +1,5 @@
 import React from "react";
-import CustomInputNumber from "component/CustomInputNumber";
+import CustomInputNumber from "components/CustomInputNumber";
 
 const App = () => {
   return (

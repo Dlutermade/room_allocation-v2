@@ -7,8 +7,8 @@ import React, {
   useRef,
 } from "react";
 import { clamp } from "../../utils/number";
-import useLimitedCounter from "./hook/useLimitedCounter";
-import useTimer, { Action } from "./hook/useTimer";
+import useLimitedCounter from "./hooks/useLimitedCounter";
+import useTimer, { Action } from "./hooks/useTimer";
 
 type Props = {
   min: number;
@@ -71,7 +71,7 @@ const CustomInputNumber = ({
   return (
     <div className="flex gap-2 text-base">
       <button
-        className="w-12 h-12 border-2 border-gray-800 rounded-lg text-2xl"
+        className="w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg"
         onClick={handleDecreases}
         onMouseDown={handleStartDecrement}
         onMouseUp={handleStopTimer}
@@ -79,7 +79,7 @@ const CustomInputNumber = ({
         -
       </button>
       <input
-        className="w-12 h-12 border-2 border-indigo-700 outline-0 text-center focus:border-indigo-500 rounded-lg"
+        className="w-12 h-12 text-center border-2 border-indigo-700 rounded-lg outline-0 focus:border-indigo-500"
         type="number"
         min={min}
         max={max}
@@ -90,7 +90,7 @@ const CustomInputNumber = ({
         onBlur={handleBlur}
       />
       <button
-        className="w-12 h-12 border-2 border-gray-800 rounded-lg text-2xl"
+        className="w-12 h-12 text-2xl border-2 border-gray-800 rounded-lg"
         onClick={handleIncreases}
         onMouseDown={handleStartIncrement}
         onMouseUp={handleStopTimer}
