@@ -13,7 +13,8 @@
 
     "paths": {
       "utils": ["/utils"],
-      "components": ["/components"]
+      "components": ["/components"],
+      "feature": ["/feature"]
     }
   }
 }

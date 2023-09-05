@@ -1,32 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import CustomInputNumber from "components/CustomInputNumber";
+import React from "react";
+import RoomAllocation from "feature/RoomAllocation";
 
 const App = () => {
-  const [d, setD] = useState(false);
-  const timer = useRef<NodeJS.Timeout>();
-
-  useEffect(() => {
-    timer.current = setTimeout(setD, 5000, true);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
-
-  console.log(d);
-
   return (
-    <div>
-      <CustomInputNumber
-        min={0}
-        max={1000}
-        step={5}
-        name="test"
-        value={1}
-        disabled={d}
-        onChange={(e) => {}}
-        onBlur={(e) => {}}
-      />
+    <div className="flex items-center justify-center h-screen">
+      <RoomAllocation guest={100} room={1} onChange={() => {}} />
     </div>
   );
 };
