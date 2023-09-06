@@ -1,11 +1,10 @@
 import CustomInputNumber from "components/CustomInputNumber";
 import { RoomData } from "feature/RoomAllocation";
-import React, { SetStateAction, Dispatch, useCallback } from "react";
+import React, { SetStateAction, Dispatch, useCallback, useMemo } from "react";
 import { NativeEventHandler } from "types";
 import { clamp } from "utils/number";
 
 type Props = {
-  guest: number;
   unallocatedCount: number;
   max: number;
   adult: number;
@@ -16,7 +15,6 @@ type Props = {
 };
 
 const Room = ({
-  guest,
   unallocatedCount,
   max,
   adult,
@@ -127,7 +125,7 @@ const Room = ({
 
         <CustomInputNumber
           min={1}
-          max={guest}
+          max={4}
           step={1}
           name={`room-${idx}-adult`}
           value={adult}
@@ -144,7 +142,7 @@ const Room = ({
 
         <CustomInputNumber
           min={0}
-          max={guest}
+          max={4}
           step={1}
           name={`room-${idx}-child`}
           value={child}
