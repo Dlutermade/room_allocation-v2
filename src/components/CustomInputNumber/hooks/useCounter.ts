@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { clamp } from "utils/number";
 
-const useCounterValue = (
+const useCounter = (
   value: number | undefined,
   min: number,
   max: number,
@@ -38,4 +38,4 @@ const useCounterValue = (
   };
 };
 
-export default useCounterValue;
+export default useCounter;

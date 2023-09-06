@@ -9,14 +9,14 @@ import {
 import { NativeEventHandler } from "types";
 import { cn } from "utils/cn";
 import { clamp } from "utils/number";
-import useCounterValue from "./hooks/useCounterValue";
+import useCounter from "./hooks/useCounter";
 import useEventTrigger, {
   eventTriggerList,
 } from "./hooks/useNativeEventTrigger";
 import useLongPressTimer, { Action } from "./hooks/useLongPressTimer";
-import useRegisterNativeEvent, {
+import useNativeEventRegister, {
   NativeEventRegisterObject,
-} from "./hooks/useRegisterNativeEvent";
+} from "./hooks/useNativeEventRegister";
 
 type Props = {
   min?: number;
@@ -57,7 +57,7 @@ const CustomInputNumber = ({
     ],
     [onChange, onBlur]
   );
-  useRegisterNativeEvent(elRef, events);
+  useNativeEventRegister(elRef, events);
 
   const { onChangeTrigger, onBlurTrigger } = useEventTrigger(
     elRef,
@@ -65,7 +65,7 @@ const CustomInputNumber = ({
   );
 
   const { counterValue, setCounterValue, onDecreases, onIncreases } =
-    useCounterValue(value, min, max, step, onChangeTrigger);
+    useCounter(value, min, max, step, onChangeTrigger);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setCounterValue(clamp(Number(e.target.value), min, max));

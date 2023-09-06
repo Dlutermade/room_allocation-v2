@@ -6,7 +6,7 @@ export type NativeEventRegisterObject = {
   handler: NativeEventHandler;
 };
 
-const useRegisterNativeEvent = (
+const useNativeEventRegister = (
   ref: MutableRefObject<HTMLInputElement>,
   events: NativeEventRegisterObject[]
 ) => {
@@ -24,4 +24,4 @@ const useRegisterNativeEvent = (
   }, [events]);
 };
 
-export default useRegisterNativeEvent;
+export default useNativeEventRegister;
