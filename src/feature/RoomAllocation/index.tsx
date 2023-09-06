@@ -36,6 +36,7 @@ const RoomAllocation = ({ guest, room, onChange }: Props) => {
 
   const roomsRender = rooms.map((item, idx) => (
     <Room
+      guest={guest}
       unallocatedCount={unallocatedCount}
       max={4}
       adult={item.adult}

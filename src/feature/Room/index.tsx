@@ -5,6 +5,7 @@ import { NativeEventHandler } from "types";
 import { clamp } from "utils/number";
 
 type Props = {
+  guest: number;
   unallocatedCount: number;
   max: number;
   adult: number;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 const Room = ({
+  guest,
   unallocatedCount,
   max,
   adult,
@@ -103,7 +105,7 @@ const Room = ({
 
         <CustomInputNumber
           min={1}
-          max={4}
+          max={Math.min(max, guest)}
           step={1}
           name={`room-${idx}-adult`}
           value={adult}
@@ -120,7 +122,7 @@ const Room = ({
 
         <CustomInputNumber
           min={0}
-          max={4}
+          max={Math.min(max, guest)}
           step={1}
           name={`room-${idx}-child`}
           value={child}
