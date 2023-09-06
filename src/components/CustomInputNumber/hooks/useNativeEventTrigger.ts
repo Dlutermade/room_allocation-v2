@@ -1,16 +1,15 @@
 import { MutableRefObject, useMemo } from "react";
+import { SupportNativeEventList, SupportNativeEvent } from "types";
 import { capitalize } from "utils/string";
 
-type NativeEvent = keyof HTMLElementEventMap;
-
-type NativeEventTriggerRecord<T extends NativeEvent> = Record<
+type NativeEventTriggerRecord<T extends SupportNativeEvent> = Record<
   `on${Capitalize<T>}Trigger`,
   VoidFunction
 >;
 
-export const eventTriggerList = ["change", "blur"] as const;
+export const eventTriggerList: SupportNativeEventList = ["change", "blur"];
 
-const useNativeEventTrigger = <T extends NativeEvent>(
+const useNativeEventTrigger = <T extends SupportNativeEvent>(
   ref: MutableRefObject<HTMLInputElement>,
   events: readonly T[]
 ) => {

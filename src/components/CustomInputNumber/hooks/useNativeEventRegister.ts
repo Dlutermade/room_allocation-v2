@@ -1,8 +1,8 @@
 import { MutableRefObject, useEffect } from "react";
-import { NativeEventHandler } from "types";
+import { NativeEventHandler, SupportNativeEvent } from "types";
 
 export type NativeEventRegisterObject = {
-  eventName: keyof HTMLElementEventMap;
+  eventName: keyof HTMLElementEventMap & SupportNativeEvent;
   handler: NativeEventHandler;
 };
 
