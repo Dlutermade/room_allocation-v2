@@ -11,7 +11,9 @@ const useCounterValue = (
   const [counterValue, setCounterValue] = useState(clamp(value, min, max));
 
   // change `value` also change `counterValue`
-  useEffect(() => setCounterValue(clamp(value, min, max)), [value, min, max]);
+  useEffect(() => {
+    setCounterValue(clamp(value, min, max));
+  }, [value, value === counterValue, min, max]);
 
   // change `counterValue` trigger onChange
   useLayoutEffect(() => {

@@ -8,6 +8,8 @@ const App = () => {
   const onChange = useMemo<NativeEventHandler>(
     () => (e) => {
       setValue(+e.target.value);
+      console.log("change", e.target.value);
+      console.log("change", e.target.name);
     },
     []
   );
@@ -29,7 +31,7 @@ const App = () => {
           onChange={console.log.bind(this, "result")}
         />
       }
-      {/*
+      {
         <>
           <CustomInputNumber
             min={0}
@@ -42,8 +44,8 @@ const App = () => {
             onBlur={onBlur}
           />
           <input className="border-2" type="number" />
-      </>
-      */}
+        </>
+      }
     </div>
   );
 };
