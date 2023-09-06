@@ -1,3 +1,6 @@
+
+第二版做了些許修改，使得 `CustomInputNumber` 更趨近於 原生Input
+
 using 
 
 1. Tailwind
