@@ -75,11 +75,11 @@ const CustomInputNumber = ({
   const timerActions = useMemo<Action<Operation>[]>(
     () => [
       {
-        name: "Increment",
+        name: "increment",
         handler: onIncreases,
       },
       {
-        name: "Decrement",
+        name: "decrement",
         handler: onDecreases,
       },
     ],

@@ -2,12 +2,12 @@ import { useCallback, useMemo, useRef } from "react";
 import { capitalize } from "utils/string";
 
 export type Action<T extends string> = {
-  name: Capitalize<T>;
+  name: T;
   handler: VoidFunction;
 };
 
 type ActionRecord<T extends string> = Record<
-  `handleStart${Action<T>["name"]}Timer`,
+  `handleStart${Capitalize<Action<T>["name"]>}Timer`,
   VoidFunction
 >;
 
