@@ -1,8 +1,18 @@
 import { MutableRefObject, useEffect } from "react";
-import { NativeEventHandler, SupportNativeEvent } from "types";
+import {
+  CustomNativeEvent,
+  NativeEventHandler,
+  SupportNativeEvent,
+  conventToCustomNativeEvent,
+} from "types";
 
 export type NativeEventRegisterObject = {
-  eventName: keyof HTMLElementEventMap & SupportNativeEvent;
+  eventName: SupportNativeEvent;
+  handler: NativeEventHandler;
+};
+
+type _NativeEventRegisterObject = {
+  eventName: CustomNativeEvent;
   handler: NativeEventHandler;
 };
 
@@ -12,12 +22,17 @@ const useNativeEventRegister = (
 ) => {
   // register event
   useEffect(() => {
-    events.forEach((event) =>
+    const _events = events.map<_NativeEventRegisterObject>((event) => ({
+      ...event,
+      eventName: conventToCustomNativeEvent(event.eventName),
+    }));
+
+    _events.forEach((event) =>
       ref.current.addEventListener(event.eventName, event.handler)
     );
 
     return () => {
-      events.forEach((event) =>
+      _events.forEach((event) =>
         ref.current.removeEventListener(event.eventName, event.handler)
       );
     };

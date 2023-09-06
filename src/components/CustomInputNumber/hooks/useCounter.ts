@@ -18,6 +18,7 @@ const useCounter = (
 
   // change `counterValue` trigger onChange
   useLayoutEffect(() => {
+    console.log("onChangeTrigger");
     if (value !== counterValue) onChangeTrigger();
   }, [counterValue]);
 
