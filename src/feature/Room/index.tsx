@@ -1,6 +1,7 @@
 import CustomInputNumber from "components/CustomInputNumber";
 import { RoomData } from "feature/RoomAllocation";
 import React, { SetStateAction, Dispatch, useCallback } from "react";
+import { NativeEventHandler } from "types";
 import { clamp } from "utils/number";
 
 type Props = {
@@ -11,14 +12,8 @@ type Props = {
   child: number;
   idx: number;
   disabled: boolean;
-  setRoomsChange: Dispatch<SetStateAction<RoomData[]>>;
+  setRooms: Dispatch<SetStateAction<RoomData[]>>;
 };
-
-type HTMLInputEventHandler = (
-  event: Event & {
-    target: HTMLInputElement;
-  }
-) => void;
 
 const Room = ({
   guest,
@@ -28,11 +23,11 @@ const Room = ({
   child,
   idx,
   disabled,
-  setRoomsChange,
+  setRooms,
 }: Props) => {
-  const handleAdultChange = useCallback<HTMLInputEventHandler>(
+  const handleAdultChange = useCallback<NativeEventHandler>(
     (e) => {
-      setRoomsChange((prev) => {
+      setRooms((prev) => {
         const newTotalGuestOfRoom = Number(e.target.value) + prev[idx].child;
         const totalUnallocatedOfRoom = max - prev[idx].child;
 
@@ -75,9 +70,9 @@ const Room = ({
     [unallocatedCount]
   );
 
-  const handleChildChange = useCallback<HTMLInputEventHandler>(
+  const handleChildChange = useCallback<NativeEventHandler>(
     (e) => {
-      setRoomsChange((prev) => {
+      setRooms((prev) => {
         const newTotalGuestOfRoom = prev[idx].adult + Number(e.target.value);
         const totalUnallocatedOfRoom = max - prev[idx].adult;
 
@@ -138,6 +133,7 @@ const Room = ({
           value={adult}
           disabled={disabled}
           onChange={handleAdultChange}
+          onBlur={() => {}}
         />
       </div>
 
@@ -154,6 +150,7 @@ const Room = ({
           value={child}
           disabled={disabled}
           onChange={handleChildChange}
+          onBlur={() => {}}
         />
       </div>
 

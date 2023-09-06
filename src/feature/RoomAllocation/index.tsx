@@ -13,15 +13,15 @@ type Props = {
 };
 
 const RoomAllocation = ({ guest, room, onChange }: Props) => {
-  const [rooms, setRoomsChange] = useState<RoomData[]>([]);
+  const [rooms, setRooms] = useState<RoomData[]>(
+    Array.from({ length: room }, () => ({ adult: 1, child: 0 }))
+  );
 
   /**
    * 每當 room 和 guest 產生變化，即重新分配
    *  */
   useEffect(() => {
-    setRoomsChange(
-      Array.from({ length: room }, () => ({ adult: 1, child: 0 }))
-    );
+    setRooms(Array.from({ length: room }, () => ({ adult: 1, child: 0 })));
   }, [room, guest]);
 
   const unallocatedCount = useMemo(
@@ -30,6 +30,8 @@ const RoomAllocation = ({ guest, room, onChange }: Props) => {
     [rooms]
   );
 
+  // 如果 需要等分配完在輸出 也可以用
+  // useEffect(() => unallocatedCount === 0 && onChange(rooms), [rooms]);
   useEffect(() => onChange(rooms), [rooms]);
 
   const roomsRender = rooms.map((item, idx) => (
@@ -41,7 +43,7 @@ const RoomAllocation = ({ guest, room, onChange }: Props) => {
       child={item.child}
       idx={idx}
       disabled={room === guest}
-      setRoomsChange={setRoomsChange}
+      setRooms={setRooms}
       key={`rooms-${idx}`}
     />
   ));
