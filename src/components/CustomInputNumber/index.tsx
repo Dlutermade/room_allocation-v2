@@ -19,25 +19,27 @@ import useRegisterNativeEvent, {
 } from "./hooks/useRegisterNativeEvent";
 
 type Props = {
-  min: number;
-  max: number;
-  step: number;
+  min?: number;
+  max?: number;
+  step?: number;
   name: string;
-  value: number;
-  disabled: boolean;
-  onChange: NativeEventHandler;
-  onBlur: NativeEventHandler;
-} & Omit<ComponentProps<"input">, "onChange" | "onBlur">;
+  value?: number;
+  disabled?: boolean;
+  onChange?: NativeEventHandler;
+  onBlur?: NativeEventHandler;
+} & Omit<ComponentProps<"input">, "onChange" | "onBlur" | "value">;
+
+const noop = () => {};
 
 const CustomInputNumber = ({
-  min,
-  max,
-  step,
+  min = -Infinity,
+  max = Infinity,
+  step = 1,
   name,
   value,
-  disabled,
-  onChange,
-  onBlur,
+  disabled = false,
+  onChange = noop,
+  onBlur = noop,
   ...rest
 }: Props) => {
   const elRef = useRef<HTMLInputElement>();

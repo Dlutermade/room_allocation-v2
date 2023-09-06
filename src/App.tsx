@@ -26,8 +26,8 @@ const App = () => {
     <div className="flex flex-col items-center justify-center h-screen gap-4">
       {
         <RoomAllocation
-          guest={10}
-          room={3}
+          guest={3}
+          room={2}
           onChange={console.log.bind(this, "result")}
         />
       }
@@ -42,6 +42,19 @@ const App = () => {
             disabled={false}
             onChange={onChange}
             onBlur={onBlur}
+          />
+          <input className="border-2" type="number" />
+        </>
+      }
+      {
+        <>
+          <h2>沒有外部 state</h2>
+          <CustomInputNumber
+            name={"test2"}
+            onChange={(e) => {
+              console.log("no component state change", e.target.value);
+              console.log("no component state change ", e.target.name);
+            }}
           />
           <input className="border-2" type="number" />
         </>
