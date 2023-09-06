@@ -92,6 +92,12 @@ const CustomInputNumber = ({
     handleStopTimer,
   } = useLongPressTimer(timerActions);
 
+  useEffect(() => {
+    if (disabled) {
+      handleStopTimer();
+    }
+  }, [disabled]);
+
   return (
     <div className="flex gap-2 text-base custom-input-number">
       <button
@@ -104,6 +110,7 @@ const CustomInputNumber = ({
         onMouseDown={handleStartDecrementTimer}
         onMouseUp={handleStopTimer}
         onBlur={onBlurTrigger}
+        disabled={disabled}
       >
         -
       </button>
@@ -134,6 +141,7 @@ const CustomInputNumber = ({
         onMouseDown={handleStartIncrementTimer}
         onMouseUp={handleStopTimer}
         onBlur={onBlurTrigger}
+        disabled={disabled}
       >
         +
       </button>

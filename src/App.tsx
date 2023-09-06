@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import RoomAllocation from "feature/RoomAllocation";
 import CustomInputNumber from "components/CustomInputNumber";
 import { NativeEventHandler } from "types";
@@ -21,6 +21,12 @@ const App = () => {
     },
     [value]
   );
+
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    setTimeout(setDisabled, 5_000, true);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4">
@@ -54,6 +60,21 @@ const App = () => {
             onChange={(e) => {
               console.log("no component state change", e.target.value);
               console.log("no component state change ", e.target.name);
+            }}
+          />
+          <input className="border-2" type="number" />
+        </>
+      }
+
+      {
+        <>
+          <h2>5秒後 disabled</h2>
+          <CustomInputNumber
+            name={"test2"}
+            disabled={disabled}
+            onChange={(e) => {
+              console.log("5s disabled change", e.target.value);
+              console.log("5s disabled change ", e.target.name);
             }}
           />
           <input className="border-2" type="number" />
