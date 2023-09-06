@@ -26,32 +26,21 @@ const Room = ({
   const handleAdultChange = useCallback<NativeEventHandler>(
     (e) => {
       setRooms((prev) => {
-        const newTotalGuestOfRoom = Number(e.target.value) + prev[idx].child;
+        let newValue = Number(e.target.value);
+        const newTotalGuestOfRoom = newValue + prev[idx].child;
         const totalUnallocatedOfRoom = max - prev[idx].child;
 
         if (newTotalGuestOfRoom >= max) {
-          const newValue = Number(e.target.value);
-
-          e.target.value = clamp(
-            newValue,
-            1,
-            totalUnallocatedOfRoom
-          ).toString();
+          newValue = clamp(newValue, 1, totalUnallocatedOfRoom);
         }
 
-        const offset = Number(e.target.value) - prev[idx].adult;
+        const offset = newValue - prev[idx].adult;
         if (offset > unallocatedCount) {
-          const newValue = Number(e.target.value);
-
-          e.target.value = clamp(
-            newValue,
-            1,
-            prev[idx].adult + unallocatedCount
-          ).toString();
+          newValue = clamp(newValue, 1, prev[idx].adult + unallocatedCount);
         }
 
         // not change
-        if (Number(e.target.value) === prev[idx].adult) {
+        if (newValue === prev[idx].adult) {
           return prev;
         }
 
@@ -59,7 +48,7 @@ const Room = ({
           ...prev.slice(0, idx),
           {
             ...prev[idx],
-            adult: Number(e.target.value),
+            adult: newValue,
           },
           ...prev.slice(idx + 1),
         ];
@@ -71,32 +60,21 @@ const Room = ({
   const handleChildChange = useCallback<NativeEventHandler>(
     (e) => {
       setRooms((prev) => {
-        const newTotalGuestOfRoom = prev[idx].adult + Number(e.target.value);
+        let newValue = Number(e.target.value);
+        const newTotalGuestOfRoom = prev[idx].adult + newValue;
         const totalUnallocatedOfRoom = max - prev[idx].adult;
 
         if (newTotalGuestOfRoom >= max) {
-          const newValue = Number(e.target.value);
-
-          e.target.value = clamp(
-            newValue,
-            0,
-            totalUnallocatedOfRoom
-          ).toString();
+          newValue = clamp(newValue, 0, totalUnallocatedOfRoom);
         }
 
         const offset = Number(e.target.value) - prev[idx].child;
         if (offset > unallocatedCount) {
-          const newValue = Number(e.target.value);
-
-          e.target.value = clamp(
-            newValue,
-            0,
-            prev[idx].child + unallocatedCount
-          ).toString();
+          newValue = clamp(newValue, 0, prev[idx].child + unallocatedCount);
         }
 
         // not change
-        if (Number(e.target.value) === prev[idx].child) {
+        if (newValue === prev[idx].child) {
           return prev;
         }
 
@@ -104,7 +82,7 @@ const Room = ({
           ...prev.slice(0, idx),
           {
             ...prev[idx],
-            child: Number(e.target.value),
+            child: newValue,
           },
           ...prev.slice(idx + 1),
         ];
